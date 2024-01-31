@@ -127,6 +127,10 @@ export class NodeApiError extends NodeError {
 	) {
 		super(node, errorResponse);
 
+		if (!httpCode && errorResponse instanceof Error && errorResponse.name === 'AxiosError') {
+			httpCode = errorResponse.code as string;
+		}
+
 		// only for request library error
 		if (errorResponse.error) {
 			removeCircularRefs(errorResponse.error as JsonObject);
